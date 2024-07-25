@@ -3,6 +3,7 @@
 use App\Http\Controllers\Api\KategoriController;
 use App\Http\Controllers\Api\GenreController;
 use App\Http\Controllers\Api\AktorController;
+use App\Http\Controllers\Api\FilmController;
 use App\Http\Controllers\Api\AuthController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -43,6 +44,12 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::get('aktor/{id}', [AktorController::class, 'show']);
     Route::put('aktor/{id}', [AktorController::class, 'update']);
     Route::delete('aktor/{id}', [AktorController::class, 'destroy']);
+
+    Route::get('film', [FilmController::class, 'index']);
+    Route::post('film', [FilmController::class, 'store']);
+    Route::get('film/{id}', [FilmController::class, 'show']);
+    Route::put('film/{id}', [FilmController::class, 'update']);
+    Route::delete('film/{id}', [FilmController::class, 'destroy']);
 
 });
 

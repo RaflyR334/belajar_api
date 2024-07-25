@@ -9,6 +9,15 @@ class film extends Model
 {
     use HasFactory;
 
+    protected $fillable = [
+        'judul',
+        'slug',
+        'deskripsi',
+        'poto',
+        'url_vidio',
+        'id_kategori'
+    ];
+
     public function kategori()
     {
         return $this->belongsTo(Kategori::class, 'id_kategori');
@@ -16,11 +25,11 @@ class film extends Model
 
     public function genre()
     {
-        return $this->belongsTo(Genre::class, 'genre_film', 'id_film', 'id_genre');
+        return $this->belongsToMany(Genre::class, 'genre_film', 'id_film', 'id_genre');
     }
 
     public function aktor()
     {
-        return $this->belongsTo(Aktor::class, 'genre_film', 'id_film', 'id_aktor');
+        return $this->belongsToMany(Aktor::class, 'aktor_film', 'id_film', 'id_aktor');
     }
 }
