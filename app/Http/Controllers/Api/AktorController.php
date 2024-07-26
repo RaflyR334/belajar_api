@@ -10,7 +10,9 @@ class AktorController extends Controller
 {
     public function index()
     {
-        $aktor = Aktor::latest()->get();
+        $aktor = Aktor::latest(
+            
+        )->get();
         $response = [
             'success' => true,
             'message' => 'Daftar aktor',
