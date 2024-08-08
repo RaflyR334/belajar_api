@@ -11,7 +11,7 @@ class FilmController extends Controller
 {
     public function index()
     {
-        $films = Film::with(['genre', 'aktor'])->get();
+        $films = film::with(['genre', 'aktor'])->get();
         return response()->json([
             'success' => true,
             'message' => 'Data Film',

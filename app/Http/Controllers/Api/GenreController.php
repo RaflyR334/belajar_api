@@ -10,7 +10,7 @@ class GenreController extends Controller
 {
     public function index()
     {
-        $genre = Genre::latest()->get();
+        $genre = genre::latest()->get();
         $response = [
             'success' => true,
             'message' => 'Daftar Genre',
