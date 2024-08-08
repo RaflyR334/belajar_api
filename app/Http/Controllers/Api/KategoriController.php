@@ -3,14 +3,14 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Models\kategori;
 use Illuminate\Http\Request;
-use App\Models\Kategori;
 
 class KategoriController extends Controller
 {
     public function index()
     {
-        $kategori = Kategori::latest()->get();
+        $kategori = kategori::latest()->get();
         $response = [
             'success' => true,
             'message' => 'Daftar Kategori',
@@ -34,7 +34,7 @@ class KategoriController extends Controller
     public function show($id)
     {
         $kategori = Kategori::find($id);
-        if (Kategori) {
+        if (kategori) {
             return response()->json([
                 'succes' => true,
                 'message' => 'detail kategori disimpan',

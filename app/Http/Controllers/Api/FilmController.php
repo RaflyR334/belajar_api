@@ -1,22 +1,21 @@
 <?php
-
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\Film;
 use Illuminate\Http\Request;
-use Storage;
-use Validator;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Validator;
 
 class FilmController extends Controller
 {
     public function index()
     {
-        $film = Film::with(['genre', 'aktor'])->get();
+        $films = Film::with(['genre', 'aktor'])->get();
         return response()->json([
             'success' => true,
             'message' => 'Data Film',
-            'data' => $film,
+            'data' => $films,
         ], 200);
     }
 
@@ -26,8 +25,8 @@ class FilmController extends Controller
             'judul' => 'required|string|unique:films',
             'slug' => 'required|string',
             'deskripsi' => 'required|string',
-            'poto' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-            'url_vidio' => 'required|string',
+            'foto' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'url_video' => 'required|string',
             'id_kategori' => 'required|exists:kategoris,id',
             'genre' => 'required|array',
             'aktor' => 'required|array',
@@ -42,14 +41,14 @@ class FilmController extends Controller
         }
 
         try {
-            $path = $request->file('poto')->store('public/poto');
+            $path = $request->file('foto')->store('public/foto');
 
             $film = Film::create([
                 'judul' => $request->judul,
                 'slug' => $request->slug,
                 'deskripsi' => $request->deskripsi,
-                'poto' => $path,
-                'url_vidio' => $request->url_vidio,
+                'foto' => $path,
+                'url_video' => $request->url_video,
                 'id_kategori' => $request->id_kategori,
             ]);
 
@@ -95,8 +94,8 @@ class FilmController extends Controller
             'judul' => 'required|string|unique:films,judul,' . $id,
             'slug' => 'required|string',
             'deskripsi' => 'required|string',
-            'poto' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-            'url_vidio' => 'required|string',
+            'foto' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'url_video' => 'required|string',
             'id_kategori' => 'required|exists:kategoris,id',
             'genre' => 'required|array',
             'aktor' => 'required|array',
@@ -111,15 +110,15 @@ class FilmController extends Controller
         }
 
         try {
-            if ($request->hasFile('poto')) {
+            if ($request->hasFile('foto')) {
                 // Delete old photo
-                Storage::delete($film->poto);
+                Storage::delete($film->foto);
 
-                $path = $request->file('poto')->store('public/poto');
-                $film->poto = $path;
+                $path = $request->file('foto')->store('public/foto');
+                $film->foto = $path;
             }
 
-            $film->update($request->only(['judul', 'deskripsi', 'url_vidio', 'id_kategori']));
+            $film->update($request->only(['judul', 'deskripsi', 'url_video', 'id_kategori']));
 
             if ($request->has('genre')) {
                 $film->genre()->sync($request->genre);
@@ -149,14 +148,16 @@ class FilmController extends Controller
             $film = Film::findOrFail($id);
 
             // Delete photo
-            Storage::delete($film->poto);
+            Storage::delete($film->foto);
 
             $film->delete();
-
+            $film->aktor()->detach();
+            $film->genre()->detach();
             return response()->json([
                 'success' => true,
                 'message' => 'Data deleted successfully',
-            ], 200);
+                'data' => null,
+            ], 204);
         } catch (\Exception $e) {
             return response()->json([
                 'success' => false,
