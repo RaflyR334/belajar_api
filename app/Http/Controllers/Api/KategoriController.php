@@ -3,14 +3,14 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Models\Kategori;
 use Illuminate\Http\Request;
+use App\Models\Kategori;
 
 class KategoriController extends Controller
 {
     public function index()
     {
-        $kategori = kategori::latest()->get();
+        $kategori = Kategori::latest()->get();
         $response = [
             'success' => true,
             'message' => 'Daftar Kategori',
