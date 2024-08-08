@@ -34,7 +34,7 @@ class KategoriController extends Controller
     public function show($id)
     {
         $kategori = Kategori::find($id);
-        if (kategori) {
+        if (Kategori) {
             return response()->json([
                 'succes' => true,
                 'message' => 'detail kategori disimpan',
