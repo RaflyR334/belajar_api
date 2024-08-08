@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Models\Aktor;
+use App\Models\aktor;
 
 class AktorController extends Controller
 {
